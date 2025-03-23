@@ -17,18 +17,18 @@ documentation and/or software.
   defined with C compiler flags.
  */
 #ifndef MD
-#define MD MD5
+#define MD 5
 #endif
 
 #include "global.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+
 #if MD == 2
 #include "md2.h"
 #endif
 #if MD == 4
-
 #include "md4.h"
 #endif
 #if MD == 5
@@ -37,8 +37,8 @@ documentation and/or software.
 
 /* Length of test block, number of test blocks.
  */
-#define TEST_BLOCK_LEN 1000
-#define TEST_BLOCK_COUNT 1000
+#define TEST_BLOCK_LEN 10000
+#define TEST_BLOCK_COUNT 10000
 
 static void MDString PROTO_LIST((char *));
 static void MDTimeTrial PROTO_LIST((void));
@@ -77,7 +77,6 @@ Arguments (may be any combination):
  */
 int main(argc, argv)
 int argc;
-
 char *argv[];
 {
     int i;
@@ -168,10 +167,6 @@ static void MDTestSuite() {
 }
 
 /* Digests a file and prints the result.
-
-
-
-
  */
 static void MDFile(filename) char *filename;
 {
@@ -185,7 +180,7 @@ static void MDFile(filename) char *filename;
 
     else {
         MDInit(&context);
-        while (len = fread(buffer, 1, 1024, file))
+        while ((len = fread(buffer, 1, 1024, file)))
             MDUpdate(&context, buffer, len);
         MDFinal(digest, &context);
 
@@ -205,7 +200,7 @@ static void MDFilter() {
     unsigned char buffer[16], digest[16];
 
     MDInit(&context);
-    while (len = fread(buffer, 1, 16, stdin))
+    while ((len = fread(buffer, 1, 16, stdin)))
         MDUpdate(&context, buffer, len);
     MDFinal(digest, &context);
 

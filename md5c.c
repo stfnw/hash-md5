@@ -23,8 +23,8 @@ These notices must be retained in any copies of any part of this
 documentation and/or software.
  */
 
-#include "md5.h"
 #include "global.h"
+#include "md5.h"
 
 /* Constants for MD5Transform routine.
  */
@@ -74,10 +74,9 @@ Rotation is separate from addition to prevent recomputation.
 #define FF(a, b, c, d, x, s, ac)                                               \
     {                                                                          \
         (a) += F((b), (c), (d)) + (x) + (UINT4)(ac);                           \
-        (a) = ROTATE_LEFT((a), (s));
-
-(a) += (b);
-}
+        (a) = ROTATE_LEFT((a), (s));                                           \
+        (a) += (b);                                                            \
+    }
 #define GG(a, b, c, d, x, s, ac)                                               \
     {                                                                          \
         (a) += G((b), (c), (d)) + (x) + (UINT4)(ac);                           \
@@ -124,9 +123,7 @@ unsigned int inputLen; /* length of input block */
     index = (unsigned int)((context->count[0] >> 3) & 0x3F);
 
     /* Update number of bits */
-    if ((context->count[0] += ((UINT4)inputLen << 3))
-
-        < ((UINT4)inputLen << 3))
+    if ((context->count[0] += ((UINT4)inputLen << 3)) < ((UINT4)inputLen << 3))
         context->count[1]++;
     context->count[1] += ((UINT4)inputLen >> 29);
 
@@ -218,7 +215,6 @@ unsigned char block[64];
     GG(a, b, c, d, x[9], S21, 0x21e1cde6);  /* 25 */
     GG(d, a, b, c, x[14], S22, 0xc33707d6); /* 26 */
     GG(c, d, a, b, x[3], S23, 0xf4d50d87);  /* 27 */
-
     GG(b, c, d, a, x[8], S24, 0x455a14ed);  /* 28 */
     GG(a, b, c, d, x[13], S21, 0xa9e3e905); /* 29 */
     GG(d, a, b, c, x[2], S22, 0xfcefa3f8);  /* 30 */
@@ -266,12 +262,7 @@ unsigned char block[64];
     state[2] += c;
     state[3] += d;
 
-    /* Zeroize sensitive information.
-
-
-
-
-  */
+    /* Zeroize sensitive information. */
     MD5_memset((POINTER)x, 0, sizeof(x));
 }
 
@@ -317,7 +308,6 @@ unsigned int len;
     unsigned int i;
 
     for (i = 0; i < len; i++)
-
         output[i] = input[i];
 }
 
