@@ -1,33 +1,30 @@
-/* MD5C.C - RSA Data Security, Inc., MD5 message-digest algorithm
- */
+/* MD5C.C - RSA Data Security, Inc., MD5 message-digest algorithm */
 
 /* Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
-rights reserved.
-
-License to copy and use this software is granted provided that it
-is identified as the "RSA Data Security, Inc. MD5 Message-Digest
-Algorithm" in all material mentioning or referencing this software
-or this function.
-
-License is also granted to make and use derivative works provided
-that such works are identified as "derived from the RSA Data
-Security, Inc. MD5 Message-Digest Algorithm" in all material
-mentioning or referencing the derived work.
-
-RSA Data Security, Inc. makes no representations concerning either
-the merchantability of this software or the suitability of this
-software for any particular purpose. It is provided "as is"
-without express or implied warranty of any kind.
-
-These notices must be retained in any copies of any part of this
-documentation and/or software.
- */
+ * rights reserved.
+ *
+ * License to copy and use this software is granted provided that it
+ * is identified as the "RSA Data Security, Inc. MD5 Message-Digest
+ * Algorithm" in all material mentioning or referencing this software
+ * or this function.
+ *
+ * License is also granted to make and use derivative works provided
+ * that such works are identified as "derived from the RSA Data
+ * Security, Inc. MD5 Message-Digest Algorithm" in all material
+ * mentioning or referencing the derived work.
+ *
+ * RSA Data Security, Inc. makes no representations concerning either
+ * the merchantability of this software or the suitability of this
+ * software for any particular purpose. It is provided "as is"
+ * without express or implied warranty of any kind.
+ *
+ * These notices must be retained in any copies of any part of this
+ * documentation and/or software. */
 
 #include "global.h"
 #include "md5.h"
 
-/* Constants for MD5Transform routine.
- */
+/* Constants for MD5Transform routine. */
 
 #define S11 7
 #define S12 12
@@ -57,20 +54,17 @@ static unsigned char PADDING[64] = {
     0,    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0,    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-/* F, G, H and I are basic MD5 functions.
- */
+/* F, G, H and I are basic MD5 functions. */
 #define F(x, y, z) (((x) & (y)) | ((~x) & (z)))
 #define G(x, y, z) (((x) & (z)) | ((y) & (~z)))
 #define H(x, y, z) ((x) ^ (y) ^ (z))
 #define I(x, y, z) ((y) ^ ((x) | (~z)))
 
-/* ROTATE_LEFT rotates x left n bits.
- */
+/* ROTATE_LEFT rotates x left n bits. */
 #define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 
 /* FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.
-Rotation is separate from addition to prevent recomputation.
- */
+ * Rotation is separate from addition to prevent recomputation. */
 #define FF(a, b, c, d, x, s, ac)                                               \
     {                                                                          \
         (a) += F((b), (c), (d)) + (x) + (UINT4)(ac);                           \
@@ -96,13 +90,11 @@ Rotation is separate from addition to prevent recomputation.
         (a) += (b);                                                            \
     }
 
-/* MD5 initialization. Begins an MD5 operation, writing a new context.
- */
+/* MD5 initialization. Begins an MD5 operation, writing a new context. */
 void MD5Init(context) MD5_CTX *context; /* context */
 {
     context->count[0] = context->count[1] = 0;
-    /* Load magic initialization constants.
-     */
+    /* Load magic initialization constants. */
     context->state[0] = 0x67452301;
     context->state[1] = 0xefcdab89;
     context->state[2] = 0x98badcfe;
@@ -110,9 +102,8 @@ void MD5Init(context) MD5_CTX *context; /* context */
 }
 
 /* MD5 block update operation. Continues an MD5 message-digest
-  operation, processing another message block, and updating the
-  context.
- */
+ * operation, processing another message block, and updating the
+ * context. */
 void MD5Update(context, input, inputLen) MD5_CTX *context; /* context */
 unsigned char *input;                                      /* input block */
 unsigned int inputLen; /* length of input block */
@@ -129,8 +120,7 @@ unsigned int inputLen; /* length of input block */
 
     partLen = 64 - index;
 
-    /* Transform as many times as possible.
-     */
+    /* Transform as many times as possible. */
     if (inputLen >= partLen) {
         MD5_memcpy((POINTER)&context->buffer[index], (POINTER)input, partLen);
         MD5Transform(context->state, context->buffer);
@@ -139,8 +129,9 @@ unsigned int inputLen; /* length of input block */
             MD5Transform(context->state, &input[i]);
 
         index = 0;
-    } else
+    } else {
         i = 0;
+    }
 
     /* Buffer remaining input */
     MD5_memcpy((POINTER)&context->buffer[index], (POINTER)&input[i],
@@ -148,8 +139,7 @@ unsigned int inputLen; /* length of input block */
 }
 
 /* MD5 finalization. Ends an MD5 message-digest operation, writing the
-  the message digest and zeroizing the context.
- */
+ * the message digest and zeroizing the context. */
 void MD5Final(digest, context) unsigned char digest[16]; /* message digest */
 MD5_CTX *context;                                        /* context */
 {
@@ -159,8 +149,7 @@ MD5_CTX *context;                                        /* context */
     /* Save number of bits */
     Encode(bits, context->count, 8);
 
-    /* Pad out to 56 mod 64.
-     */
+    /* Pad out to 56 mod 64. */
     index = (unsigned int)((context->count[0] >> 3) & 0x3f);
     padLen = (index < 56) ? (56 - index) : (120 - index);
     MD5Update(context, PADDING, padLen);
@@ -171,13 +160,11 @@ MD5_CTX *context;                                        /* context */
     /* Store state in digest */
     Encode(digest, context->state, 16);
 
-    /* Zeroize sensitive information.
-     */
+    /* Zeroize sensitive information. */
     MD5_memset((POINTER)context, 0, sizeof(*context));
 }
 
-/* MD5 basic transformation. Transforms state based on block.
- */
+/* MD5 basic transformation. Transforms state based on block. */
 static void MD5Transform(state, block) UINT4 state[4];
 unsigned char block[64];
 {
@@ -267,8 +254,7 @@ unsigned char block[64];
 }
 
 /* Encodes input (UINT4) into output (unsigned char). Assumes len is
-  a multiple of 4.
- */
+ * a multiple of 4. */
 static void Encode(output, input, len) unsigned char *output;
 UINT4 *input;
 unsigned int len;
@@ -284,22 +270,21 @@ unsigned int len;
 }
 
 /* Decodes input (unsigned char) into output (UINT4). Assumes len is
-  a multiple of 4.
- */
+ *  a multiple of 4. */
 static void Decode(output, input, len) UINT4 *output;
 unsigned char *input;
 unsigned int len;
 {
     unsigned int i, j;
 
-    for (i = 0, j = 0; j < len; i++, j += 4)
+    for (i = 0, j = 0; j < len; i++, j += 4) {
         output[i] = ((UINT4)input[j]) | (((UINT4)input[j + 1]) << 8) |
                     (((UINT4)input[j + 2]) << 16) |
                     (((UINT4)input[j + 3]) << 24);
+    }
 }
 
-/* Note: Replace "for loop" with standard memcpy if possible.
- */
+/* Note: Replace "for loop" with standard memcpy if possible. */
 
 static void MD5_memcpy(output, input, len) POINTER output;
 POINTER input;
@@ -307,18 +292,19 @@ unsigned int len;
 {
     unsigned int i;
 
-    for (i = 0; i < len; i++)
+    for (i = 0; i < len; i++) {
         output[i] = input[i];
+    }
 }
 
-/* Note: Replace "for loop" with standard memset if possible.
- */
+/* Note: Replace "for loop" with standard memset if possible. */
 static void MD5_memset(output, value, len) POINTER output;
 int value;
 unsigned int len;
 {
     unsigned int i;
 
-    for (i = 0; i < len; i++)
+    for (i = 0; i < len; i++) {
         ((char *)output)[i] = (char)value;
+    }
 }
