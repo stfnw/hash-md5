@@ -10,14 +10,18 @@
 #define PROTOTYPES 0
 #endif
 
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+
+typedef int8_t i8;
+typedef int16_t i16;
+typedef int32_t i32;
+typedef int64_t i64;
+
 /* POINTER defines a generic pointer type */
-typedef unsigned char *POINTER;
-
-/* UINT2 defines a two byte word */
-typedef uint16_t UINT2;
-
-/* UINT4 defines a four byte word */
-typedef uint32_t UINT4;
+typedef u8 *POINTER;
 
 /* PROTO_LIST is defined depending on how PROTOTYPES is defined above.
  * If using PROTOTYPES, then PROTO_LIST returns the list, otherwise it

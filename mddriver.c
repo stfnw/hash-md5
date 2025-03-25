@@ -208,7 +208,6 @@ static void MDFilter() {
 /* Prints a message digest in hexadecimal. */
 static void MDPrint(digest) unsigned char digest[16];
 {
-
     unsigned int i;
 
     for (i = 0; i < 16; i++) {
