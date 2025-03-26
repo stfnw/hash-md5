@@ -43,11 +43,11 @@
 #define S43 15
 #define S44 21
 
-static void MD5Transform PROTO_LIST((u32[4], unsigned char[64]));
-static void Encode PROTO_LIST((unsigned char *, u32 *, unsigned int));
-static void Decode PROTO_LIST((u32 *, unsigned char *, unsigned int));
-static void MD5_memcpy PROTO_LIST((POINTER, POINTER, unsigned int));
-static void MD5_memset PROTO_LIST((POINTER, int, unsigned int));
+static void MD5Transform(u32[4], unsigned char[64]);
+static void Encode(unsigned char *, u32 *, unsigned int);
+static void Decode(u32 *, unsigned char *, unsigned int);
+static void MD5_memcpy(POINTER, POINTER, unsigned int);
+static void MD5_memset(POINTER, int, unsigned int);
 
 static unsigned char PADDING[64] = {
     0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

@@ -36,12 +36,12 @@
 #define TEST_BLOCK_LEN 10000
 #define TEST_BLOCK_COUNT 10000
 
-static void MDString PROTO_LIST((char *));
-static void MDTimeTrial PROTO_LIST((void));
-static void MDTestSuite PROTO_LIST((void));
-static void MDFile PROTO_LIST((char *));
-static void MDFilter PROTO_LIST((void));
-static void MDPrint PROTO_LIST((unsigned char[16]));
+static void MDString(char *);
+static void MDTimeTrial(void);
+static void MDTestSuite(void);
+static void MDFile(char *);
+static void MDFilter(void);
+static void MDPrint(unsigned char[16]);
 
 #if MD == 2
 #define MD_CTX MD2_CTX
