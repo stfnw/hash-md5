@@ -36,12 +36,12 @@
 #define TEST_BLOCK_LEN 10000
 #define TEST_BLOCK_COUNT 10000
 
-static void MDString(char *);
+static void MDString(u8 *);
 static void MDTimeTrial(void);
 static void MDTestSuite(void);
-static void MDFile(char *);
+static void MDFile(u8 *);
 static void MDFilter(void);
-static void MDPrint(unsigned char[16]);
+static void MDPrint(u8[16]);
 
 #if MD == 2
 #define MD_CTX MD2_CTX
@@ -72,7 +72,7 @@ static void MDPrint(unsigned char[16]);
  *   (none)   - digests standard input */
 int main(argc, argv)
 int argc;
-char *argv[];
+u8 *argv[];
 {
     int i;
 
@@ -95,11 +95,11 @@ char *argv[];
 }
 
 /* Digests a string and prints the result. */
-static void MDString(string) char *string;
+static void MDString(string) u8 *string;
 {
     MD_CTX context;
-    unsigned char digest[16];
-    unsigned int len = strlen(string);
+    u8 digest[16];
+    u32 len = strlen(string);
 
     MDInit(&context);
     MDUpdate(&context, string, len);
@@ -115,15 +115,15 @@ static void MDString(string) char *string;
 static void MDTimeTrial() {
     MD_CTX context;
     time_t endTime, startTime;
-    unsigned char block[TEST_BLOCK_LEN], digest[16];
-    unsigned int i;
+    u8 block[TEST_BLOCK_LEN], digest[16];
+    u32 i;
 
     printf("MD%d time trial. Digesting %d %d-byte blocks ...", MD,
            TEST_BLOCK_LEN, TEST_BLOCK_COUNT);
 
     /* Initialize block */
     for (i = 0; i < TEST_BLOCK_LEN; i++) {
-        block[i] = (unsigned char)(i & 0xff);
+        block[i] = (u8)(i & 0xff);
     }
 
     /* Start timer */
@@ -163,12 +163,12 @@ static void MDTestSuite() {
 }
 
 /* Digests a file and prints the result. */
-static void MDFile(filename) char *filename;
+static void MDFile(filename) u8 *filename;
 {
     FILE *file;
     MD_CTX context;
     int len;
-    unsigned char buffer[1024], digest[16];
+    u8 buffer[1024], digest[16];
 
     if ((file = fopen(filename, "rb")) == NULL) {
         printf("%s can't be opened\n", filename);
@@ -193,7 +193,7 @@ static void MDFile(filename) char *filename;
 static void MDFilter() {
     MD_CTX context;
     int len;
-    unsigned char buffer[16], digest[16];
+    u8 buffer[16], digest[16];
 
     MDInit(&context);
     while ((len = fread(buffer, 1, 16, stdin))) {
@@ -206,9 +206,9 @@ static void MDFilter() {
 }
 
 /* Prints a message digest in hexadecimal. */
-static void MDPrint(digest) unsigned char digest[16];
+static void MDPrint(digest) u8 digest[16];
 {
-    unsigned int i;
+    u8 i;
 
     for (i = 0; i < 16; i++) {
         printf("%02x", digest[i]);
