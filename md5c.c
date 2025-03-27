@@ -298,7 +298,7 @@ u32 len;
 
 /* Note: Replace "for loop" with standard memset if possible. */
 static void MD5_memset(output, value, len) POINTER output;
-int value;
+i32 value;
 u32 len;
 {
     u32 i;

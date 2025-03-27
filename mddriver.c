@@ -39,7 +39,7 @@
 static void MDString(u8 *);
 static void MDTimeTrial(void);
 static void MDTestSuite(void);
-static void MDFile(u8 *);
+static void MDFile(char *);
 static void MDFilter(void);
 static void MDPrint(u8[16]);
 
@@ -70,16 +70,16 @@ static void MDPrint(u8[16]);
  *   -x       - runs test script
  *   filename - digests file
  *   (none)   - digests standard input */
-int main(argc, argv)
-int argc;
-u8 *argv[];
+i32 main(argc, argv)
+i32 argc;
+char *argv[];
 {
-    int i;
+    i32 i;
 
     if (argc > 1) {
         for (i = 1; i < argc; i++)
             if (argv[i][0] == '-' && argv[i][1] == 's') {
-                MDString(argv[i] + 2);
+                MDString((u8 *)argv[i] + 2);
             } else if (strcmp(argv[i], "-t") == 0) {
                 MDTimeTrial();
             } else if (strcmp(argv[i], "-x") == 0) {
@@ -99,7 +99,7 @@ static void MDString(string) u8 *string;
 {
     MD_CTX context;
     u8 digest[16];
-    u32 len = strlen(string);
+    u32 len = strlen((char *)string);
 
     MDInit(&context);
     MDUpdate(&context, string, len);
@@ -152,22 +152,23 @@ static void MDTimeTrial() {
 static void MDTestSuite() {
     printf("MD%d test suite:\n", MD);
 
-    MDString("");
-    MDString("a");
-    MDString("abc");
-    MDString("message digest");
-    MDString("abcdefghijklmnopqrstuvwxyz");
-    MDString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-    MDString("1234567890123456789012345678901234567890\
+    MDString((u8 *)"");
+    MDString((u8 *)"a");
+    MDString((u8 *)"abc");
+    MDString((u8 *)"message digest");
+    MDString((u8 *)"abcdefghijklmnopqrstuvwxyz");
+    MDString(
+        (u8 *)"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+    MDString((u8 *)"1234567890123456789012345678901234567890\
 1234567890123456789012345678901234567890");
 }
 
 /* Digests a file and prints the result. */
-static void MDFile(filename) u8 *filename;
+static void MDFile(filename) char *filename;
 {
     FILE *file;
     MD_CTX context;
-    int len;
+    i32 len;
     u8 buffer[1024], digest[16];
 
     if ((file = fopen(filename, "rb")) == NULL) {
@@ -192,7 +193,7 @@ static void MDFile(filename) u8 *filename;
 /* Digests the standard input and prints the result. */
 static void MDFilter() {
     MD_CTX context;
-    int len;
+    i32 len;
     u8 buffer[16], digest[16];
 
     MDInit(&context);
