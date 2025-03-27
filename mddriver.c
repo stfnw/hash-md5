@@ -11,26 +11,12 @@
  * These notices must be retained in any copies of any part of this
  * documentation and/or software. */
 
-/* The following makes MD default to MD5 if it has not already been
- * defined with C compiler flags. */
-#ifndef MD
-#define MD 5
-#endif
-
 #include "global.h"
+#include "md5.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
-#if MD == 2
-#include "md2.h"
-#endif
-#if MD == 4
-#include "md4.h"
-#endif
-#if MD == 5
-#include "md5.h"
-#endif
 
 /* Length of test block, number of test blocks. */
 #define TEST_BLOCK_LEN 10000
@@ -43,24 +29,10 @@ static void MDFile(char *);
 static void MDFilter(void);
 static void MDPrint(u8[16]);
 
-#if MD == 2
-#define MD_CTX MD2_CTX
-#define MDInit MD2Init
-#define MDUpdate MD2Update
-#define MDFinal MD2Final
-#endif
-#if MD == 4
-#define MD_CTX MD4_CTX
-#define MDInit MD4Init
-#define MDUpdate MD4Update
-#define MDFinal MD4Final
-#endif
-#if MD == 5
 #define MD_CTX MD5_CTX
 #define MDInit MD5Init
 #define MDUpdate MD5Update
 #define MDFinal MD5Final
-#endif
 
 /* Main driver.
  *
@@ -105,7 +77,7 @@ static void MDString(string) u8 *string;
     MDUpdate(&context, string, len);
     MDFinal(digest, &context);
 
-    printf("MD%d (\"%s\") = ", MD, string);
+    printf("MD5 (\"%s\") = ", string);
     MDPrint(digest);
     printf("\n");
 }
@@ -118,8 +90,8 @@ static void MDTimeTrial() {
     u8 block[TEST_BLOCK_LEN], digest[16];
     u32 i;
 
-    printf("MD%d time trial. Digesting %d %d-byte blocks ...", MD,
-           TEST_BLOCK_LEN, TEST_BLOCK_COUNT);
+    printf("MD5 time trial. Digesting %d %d-byte blocks ...", TEST_BLOCK_LEN,
+           TEST_BLOCK_COUNT);
 
     /* Initialize block */
     for (i = 0; i < TEST_BLOCK_LEN; i++) {
@@ -150,7 +122,7 @@ static void MDTimeTrial() {
 
 /* Digests a reference suite of strings and prints the results. */
 static void MDTestSuite() {
-    printf("MD%d test suite:\n", MD);
+    printf("MD5 test suite:\n");
 
     MDString((u8 *)"");
     MDString((u8 *)"a");
@@ -184,7 +156,7 @@ static void MDFile(filename) char *filename;
 
         fclose(file);
 
-        printf("MD%d (%s) = ", MD, filename);
+        printf("MD5 (%s) = ", filename);
         MDPrint(digest);
         printf("\n");
     }
