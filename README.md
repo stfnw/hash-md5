@@ -20,7 +20,7 @@ Usage:
 ./standalone-md5 infile
 ```
 
-# Example usage (original code)
+# Example usage (standalone implementation)
 
 ```
 $ printf 'Hello World' > test
