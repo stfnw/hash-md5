@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Refactoring and modifications: stfnw. Derived from the RSA Data Security, Inc. MD5 Message-Digest Algorithm.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 /* Refactored MD5 implementation from
  * https://datatracker.ietf.org/doc/html/rfc1321. Derived from the RSA Data
  * Security, Inc. MD5 Message-Digest Algorithm. Self-contained single-file
